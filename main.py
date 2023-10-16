@@ -2,16 +2,20 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from controller import status
 import os
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+API_KEY = os.environ["API_KEY"]
 
 app = Flask(__name__)
 api = Api(app)
-API_KEY = os.environ["API_KEY"]
 statusController = status("status.json")
 
 parser = reqparse.RequestParser()
 parser.add_argument('light_1')
 parser.add_argument('temp_set')
 parser.add_argument('API_KEY')
+
 
 class Home(Resource):
     def get(self):
