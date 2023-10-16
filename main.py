@@ -2,10 +2,11 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from controller import status
 import constants
+import os
 
 app = Flask(__name__)
 api = Api(app)
-
+API_KEY = os.environ["API_KEY"]
 statusController = status("status.json")
 
 parser = reqparse.RequestParser()
@@ -19,8 +20,7 @@ class Home(Resource):
         return data
     def post(self):
         args = parser.parse_args()
-        if args['API_KEY'] == constants.API_KEY:
-            print(constants.API_KEY)
+        if args['API_KEY'] == API_KEY:
             statusController.write(args['light_1'], args['temp_set'])
             #usuwam API_KEY ze zwróconego JSONa dla bezpieczeństwa.
             del args["API_KEY"]
